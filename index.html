@@ -1,0 +1,122 @@
+import React from "react";
+import { motion } from "framer-motion";
+
+export default function Portfolio() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white p-6">
+      {/* Glass Navbar */}
+      <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-4 flex justify-between items-center sticky top-4 z-50">
+        <h1 className="text-xl font-bold">Anas Moyin</h1>
+        <div className="space-x-6 hidden md:flex">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="mt-16 text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl md:text-6xl font-bold"
+        >
+          IT System Administrator
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mt-4 text-gray-300"
+        >
+          9+ Years Experience in Infrastructure, Security & Cloud
+        </motion.p>
+      </section>
+
+      {/* About */}
+      <section id="about" className="mt-20 max-w-4xl mx-auto">
+        <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-6">
+          <h3 className="text-2xl font-semibold mb-4">About Me</h3>
+          <p className="text-gray-300">
+            Experienced IT System Administrator with expertise in managing enterprise
+            infrastructure, Microsoft environments, cloud platforms, and security.
+            Skilled in identity management, endpoint management, and ensuring system
+            availability and compliance.
+          </p>
+        </div>
+      </section>
+
+      {/* Skills */}
+      <section id="skills" className="mt-20 max-w-5xl mx-auto">
+        <h3 className="text-2xl font-semibold mb-6">Skills</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            "Microsoft 365",
+            "Azure AD (Entra ID)",
+            "Intune",
+            "VMware",
+            "Windows Server",
+            "Networking",
+            "Cybersecurity",
+            "ITSM",
+          ].map((skill) => (
+            <div
+              key={skill}
+              className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl p-4 text-center"
+            >
+              {skill}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Experience */}
+      <section id="experience" className="mt-20 max-w-5xl mx-auto">
+        <h3 className="text-2xl font-semibold mb-6">Experience</h3>
+        <div className="space-y-6">
+          {[
+            {
+              role: "IT Team Lead",
+              company: "Hector Beverages",
+              period: "2023 - Present",
+            },
+            {
+              role: "IT Team Lead",
+              company: "Mystifly Consulting",
+              period: "2022 - 2023",
+            },
+            {
+              role: "IT System Engineer",
+              company: "Vedantu",
+              period: "2019 - 2022",
+            },
+          ].map((job, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.03 }}
+              className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-6"
+            >
+              <h4 className="text-xl font-semibold">{job.role}</h4>
+              <p className="text-gray-400">{job.company}</p>
+              <p className="text-sm text-gray-500">{job.period}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section id="contact" className="mt-20 max-w-4xl mx-auto text-center">
+        <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-6">
+          <h3 className="text-2xl font-semibold mb-4">Contact</h3>
+          <p>Email: anumoyin@gmail.com</p>
+          <p>Phone: +971581506881</p>
+        </div>
+      </section>
+
+      <footer className="text-center mt-20 text-gray-500 text-sm">
+        © {new Date().getFullYear()} Anas Moyin
+      </footer>
+    </div>
+  );
+}
