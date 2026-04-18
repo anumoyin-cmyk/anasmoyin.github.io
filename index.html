@@ -1,122 +1,230 @@
-import React from "react";
-import { motion } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anas Moyin | Portfolio</title>
 
-export default function Portfolio() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white p-6">
-      {/* Glass Navbar */}
-      <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-4 flex justify-between items-center sticky top-4 z-50">
-        <h1 className="text-xl font-bold">Anas Moyin</h1>
-        <div className="space-x-6 hidden md:flex">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#experience">Experience</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </div>
-
-      {/* Hero Section */}
-      <section className="mt-16 text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-6xl font-bold"
-        >
-          IT System Administrator
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mt-4 text-gray-300"
-        >
-          9+ Years Experience in Infrastructure, Security & Cloud
-        </motion.p>
-      </section>
-
-      {/* About */}
-      <section id="about" className="mt-20 max-w-4xl mx-auto">
-        <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-6">
-          <h3 className="text-2xl font-semibold mb-4">About Me</h3>
-          <p className="text-gray-300">
-            Experienced IT System Administrator with expertise in managing enterprise
-            infrastructure, Microsoft environments, cloud platforms, and security.
-            Skilled in identity management, endpoint management, and ensuring system
-            availability and compliance.
-          </p>
-        </div>
-      </section>
-
-      {/* Skills */}
-      <section id="skills" className="mt-20 max-w-5xl mx-auto">
-        <h3 className="text-2xl font-semibold mb-6">Skills</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            "Microsoft 365",
-            "Azure AD (Entra ID)",
-            "Intune",
-            "VMware",
-            "Windows Server",
-            "Networking",
-            "Cybersecurity",
-            "ITSM",
-          ].map((skill) => (
-            <div
-              key={skill}
-              className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl p-4 text-center"
-            >
-              {skill}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Experience */}
-      <section id="experience" className="mt-20 max-w-5xl mx-auto">
-        <h3 className="text-2xl font-semibold mb-6">Experience</h3>
-        <div className="space-y-6">
-          {[
-            {
-              role: "IT Team Lead",
-              company: "Hector Beverages",
-              period: "2023 - Present",
-            },
-            {
-              role: "IT Team Lead",
-              company: "Mystifly Consulting",
-              period: "2022 - 2023",
-            },
-            {
-              role: "IT System Engineer",
-              company: "Vedantu",
-              period: "2019 - 2022",
-            },
-          ].map((job, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.03 }}
-              className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-6"
-            >
-              <h4 className="text-xl font-semibold">{job.role}</h4>
-              <p className="text-gray-400">{job.company}</p>
-              <p className="text-sm text-gray-500">{job.period}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="mt-20 max-w-4xl mx-auto text-center">
-        <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-6">
-          <h3 className="text-2xl font-semibold mb-4">Contact</h3>
-          <p>Email: anumoyin@gmail.com</p>
-          <p>Phone: +918197746698</p>
-        </div>
-      </section>
-
-      <footer className="text-center mt-20 text-gray-500 text-sm">
-        © {new Date().getFullYear()} Anas Moyin
-      </footer>
-    </div>
-  );
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
+
+body {
+    background: #0f172a;
+    color: white;
+    scroll-behavior: smooth;
+}
+
+/* NAVBAR */
+nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(15,23,42,0.9);
+    padding: 15px;
+    text-align: center;
+    z-index: 1000;
+}
+
+nav a {
+    color: #38bdf8;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: white;
+}
+
+/* HEADER */
+header {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0a66c2, #020617);
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3rem;
+    animation: fadeDown 1s ease;
+}
+
+header p {
+    margin-top: 10px;
+    color: #cbd5f5;
+}
+
+/* SECTIONS */
+section {
+    padding: 80px 10%;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.8s;
+}
+
+section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #38bdf8;
+}
+
+/* CARD */
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(56,189,248,0.3);
+}
+
+/* BUTTON */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #38bdf8;
+    color: black;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.btn:hover {
+    background: white;
+}
+
+/* CONTACT */
+.contact p {
+    margin: 10px 0;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
+}
+
+/* ANIMATION */
+@keyframes fadeDown {
+    from {opacity: 0; transform: translateY(-40px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#resume">Resume</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<!-- HERO -->
+<header>
+    <h1>Anas Moyin</h1>
+    <p>IT Infrastructure & Cloud Team Lead</p>
+    <p>Azure | AWS | GCP | Cybersecurity</p>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+    <h2>About Me</h2>
+    <div class="card">
+        <p>
+            IT Infrastructure & Cloud Team Lead with 10+ years of experience managing
+            enterprise systems, hybrid cloud environments, and cybersecurity operations.
+            Skilled in Azure, AWS, GCP, Microsoft 365, and IT governance with a strong
+            focus on performance, security, and cost optimization.
+        </p>
+    </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+    <h2>Experience</h2>
+
+    <div class="card">
+        <h3>Cloud Team Lead – Hector Beverages</h3>
+        <p>2023 – Present</p>
+        <ul>
+            <li>Managed Azure, AWS, GCP infrastructure</li>
+            <li>Reduced cloud cost by 25%</li>
+            <li>Implemented IAM, MFA, Zero Trust</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>IT Team Lead – Mystify Consulting</h3>
+        <p>2022 – 2023</p>
+        <ul>
+            <li>Handled IT operations and infrastructure</li>
+            <li>Managed 200+ weekly tickets</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>System Engineer – Vedantu</h3>
+        <p>2019 – 2022</p>
+    </div>
+
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+    <h2>Resume</h2>
+    <div class="card">
+        <p>You can download my full resume here:</p>
+        <a href="Anas_Moyin_Resume.pdf" class="btn" download>Download Resume</a>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+    <h2>Contact</h2>
+    <div class="card contact">
+        <p>📧 Email: anumoyin@gmail.com</p>
+        <p>📞 Phone: +91 8197746698</p>
+        <p>📍 Location: Bangalore, India</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Anas Moyin</p>
+</footer>
+
+<script>
+const sections = document.querySelectorAll("section");
+
+window.addEventListener("scroll", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            sec.classList.add("show");
+        }
+    });
+});
+</script>
+
+</body>
+</html>
