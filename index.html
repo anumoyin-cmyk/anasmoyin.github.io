@@ -3,228 +3,1133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anas Moyin | Portfolio</title>
-
+<title>Anas Moyin — IT Infrastructure & Cloud Lead</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #050a0f;
+  --bg2: #080f17;
+  --surface: #0d1a26;
+  --border: #1a3048;
+  --cyan: #00d4ff;
+  --cyan2: #00ffcc;
+  --blue: #0099cc;
+  --text: #c8dde8;
+  --muted: #4a7a99;
+  --white: #f0f8ff;
 }
+
+html { scroll-behavior: smooth; }
 
 body {
-    background: #0f172a;
-    color: white;
-    scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
 }
 
-/* NAVBAR */
+/* Custom cursor */
+.cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  transition: transform 0.1s ease;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,212,255,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease;
+}
+
+/* Canvas background */
+#bgCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Scan line */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,212,255,0.015) 2px,
+    rgba(0,212,255,0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* NAV */
 nav {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    background: rgba(15,23,42,0.9);
-    padding: 15px;
-    text-align: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(12px);
+  background: rgba(5,10,15,0.7);
+  border-bottom: 1px solid rgba(0,212,255,0.1);
 }
 
-nav a {
-    color: #38bdf8;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
 }
 
-nav a:hover {
-    color: white;
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--cyan); }
+
+/* Main content wrapper */
+main { position: relative; z-index: 2; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 60px 80px;
+  position: relative;
 }
 
-/* HEADER */
-header {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #0a66c2, #020617);
-    text-align: center;
+.hero-content { max-width: 800px; }
+
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-tag::before {
+  content: '';
+  width: 40px; height: 1px;
+  background: var(--cyan);
 }
 
-header h1 {
-    font-size: 3rem;
-    animation: fadeDown 1s ease;
+.hero-name {
+  font-size: clamp(52px, 8vw, 96px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 0.5s;
 }
 
-header p {
-    margin-top: 10px;
-    color: #cbd5f5;
+.hero-name span {
+  background: linear-gradient(135deg, var(--cyan), var(--cyan2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* SECTIONS */
-section {
-    padding: 80px 10%;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: 0.8s;
+.hero-titles {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 0.7s;
 }
 
-section.show {
-    opacity: 1;
-    transform: translateY(0);
+.hero-bio {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text);
+  max-width: 620px;
+  margin-bottom: 48px;
+  border-left: 2px solid var(--cyan);
+  padding-left: 24px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 0.9s;
 }
 
-h2 {
-    margin-bottom: 20px;
-    color: #38bdf8;
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 1.1s;
 }
 
-/* CARD */
-.card {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    transition: 0.3s;
+.stat-item { text-align: left; }
+.stat-num {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--cyan);
+  line-height: 1;
+  font-family: 'JetBrains Mono', monospace;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 4px;
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(56,189,248,0.3);
+.hero-contact {
+  margin-top: 48px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 1.3s;
 }
 
-/* BUTTON */
 .btn {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #38bdf8;
-    color: black;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 15px;
+  padding: 12px 28px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary {
+  background: var(--cyan);
+  color: var(--bg);
+  font-weight: 700;
+}
+.btn-primary:hover {
+  background: var(--cyan2);
+  box-shadow: 0 0 30px rgba(0,212,255,0.4);
+  transform: translateY(-2px);
+}
+.btn-outline {
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-outline:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0,212,255,0.05);
 }
 
-.btn:hover {
-    background: white;
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 40px; left: 60px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 1.6s;
+}
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+  animation: scrollPulse 2s ease infinite;
 }
 
-/* CONTACT */
-.contact p {
-    margin: 10px 0;
+/* ===== SECTIONS ===== */
+section {
+  padding: 100px 60px;
+  position: relative;
 }
 
-/* FOOTER */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 64px;
+}
+
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--border), transparent);
+}
+
+/* ===== SKILLS ===== */
+#skills { background: var(--bg2); }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.skill-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.skill-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(to bottom, var(--cyan), var(--cyan2));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+
+.skill-card:hover {
+  border-color: rgba(0,212,255,0.3);
+  box-shadow: 0 0 24px rgba(0,212,255,0.08);
+  transform: translateY(-4px);
+}
+
+.skill-card:hover::before { transform: scaleY(1); }
+
+.skill-icon {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.skill-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.15);
+  color: var(--cyan);
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+/* ===== EXPERIENCE ===== */
+#experience { background: var(--bg); }
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 56px;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -44px; top: 6px;
+  width: 8px; height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.exp-role {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.exp-period {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  background: rgba(0,212,255,0.08);
+  padding: 4px 10px;
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.exp-company {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.exp-points {
+  list-style: none;
+}
+.exp-points li {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.exp-points li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--cyan);
+  font-size: 16px;
+}
+
+/* ===== ACHIEVEMENTS ===== */
+#achievements { background: var(--bg2); }
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.achievement-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  border-radius: 4px;
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.achievement-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0,212,255,0.06), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.achievement-card:hover {
+  border-color: rgba(0,212,255,0.4);
+  box-shadow: 0 0 40px rgba(0,212,255,0.1);
+  transform: translateY(-6px);
+}
+.achievement-card:hover::after { opacity: 1; }
+
+.ach-icon { font-size: 32px; margin-bottom: 16px; }
+
+.ach-metric {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--cyan);
+  margin-bottom: 8px;
+}
+
+.ach-label {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* ===== PROJECTS ===== */
+#projects { background: var(--bg); }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.project-card:hover {
+  border-color: rgba(0,212,255,0.3);
+  box-shadow: 0 8px 40px rgba(0,212,255,0.08);
+  transform: translateY(-4px);
+}
+
+.project-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.project-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.project-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ===== CERTS & EDUCATION ===== */
+#education { background: var(--bg2); }
+
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.edu-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+.edu-card:hover {
+  border-color: rgba(0,212,255,0.3);
+  transform: translateY(-3px);
+}
+.edu-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.edu-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.edu-sub {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ===== LANGUAGES ===== */
+#languages { background: var(--bg); }
+.lang-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+.lang-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+  transition: all 0.3s;
+  opacity: 0;
+}
+.lang-pill:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 20px rgba(0,212,255,0.15);
+}
+
+/* ===== FOOTER ===== */
 footer {
-    text-align: center;
-    padding: 20px;
-    color: #94a3b8;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 48px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: gap;
+  position: relative;
+  z-index: 2;
 }
 
-/* ANIMATION */
-@keyframes fadeDown {
-    from {opacity: 0; transform: translateY(-40px);}
-    to {opacity: 1; transform: translateY(0);}
+.footer-name {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--white);
+}
+.footer-contact {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.8;
+}
+.footer-contact a { color: var(--cyan); text-decoration: none; }
+
+.footer-built {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--border);
+  letter-spacing: 0.1em;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.animate-in {
+  animation: fadeUp 0.7s ease forwards;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  section, .hero { padding: 80px 24px; }
+  footer { padding: 40px 24px; flex-direction: column; gap: 24px; text-align: center; }
+  .hero-stats { gap: 24px; }
+  .scroll-hint { left: 24px; }
 }
 </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<canvas id="bgCanvas"></canvas>
+
 <nav>
-    <a href="#about">About</a>
-    <a href="#experience">Experience</a>
-    <a href="#resume">Resume</a>
-    <a href="#contact">Contact</a>
+  <div class="nav-logo">&lt;anas.moyin /&gt;</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+  </ul>
 </nav>
 
-<!-- HERO -->
-<header>
-    <h1>Anas Moyin</h1>
-    <p>IT Infrastructure & Cloud Team Lead</p>
-    <p>Azure | AWS | GCP | Cybersecurity</p>
-</header>
+<main>
 
-<!-- ABOUT -->
-<section id="about">
-    <h2>About Me</h2>
-    <div class="card">
-        <p>
-            IT Infrastructure & Cloud Team Lead with 10+ years of experience managing
-            enterprise systems, hybrid cloud environments, and cybersecurity operations.
-            Skilled in Azure, AWS, GCP, Microsoft 365, and IT governance with a strong
-            focus on performance, security, and cost optimization.
-        </p>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">Available for opportunities</div>
+    <h1 class="hero-name">Anas<br><span>Moyin</span></h1>
+    <div class="hero-titles">IT System Administrator · Cloud Engineer · Infrastructure Lead · Team Leader</div>
+    <p class="hero-bio">
+      IT Infrastructure & Cloud Team Lead with over 10 years of experience across Azure, AWS, and GCP. 
+      Specialist in hybrid cloud architecture, cybersecurity, Zero Trust models, and SLA-driven enterprise IT operations.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">25%</div>
+        <div class="stat-label">Cloud Cost Cut</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">99.9%</div>
+        <div class="stat-label">System Uptime</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">98%+</div>
+        <div class="stat-label">SLA Compliance</div>
+      </div>
     </div>
+    <div class="hero-contact">
+      <a href="mailto:anumoyin@gmail.com" class="btn btn-primary">✉ anumoyin@gmail.com</a>
+      <a href="tel:+918197746698" class="btn btn-outline">📞 +91 81977 46698</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid" id="skillsGrid"></div>
 </section>
 
 <!-- EXPERIENCE -->
 <section id="experience">
-    <h2>Experience</h2>
-
-    <div class="card">
-        <h3>Cloud Team Lead – Hector Beverages</h3>
-        <p>2023 – Present</p>
-        <ul>
-            <li>Managed Azure, AWS, GCP infrastructure</li>
-            <li>Reduced cloud cost by 25%</li>
-            <li>Implemented IAM, MFA, Zero Trust</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h3>IT Team Lead – Mystify Consulting</h3>
-        <p>2022 – 2023</p>
-        <ul>
-            <li>Handled IT operations and infrastructure</li>
-            <li>Managed 200+ weekly tickets</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h3>System Engineer – Vedantu</h3>
-        <p>2019 – 2022</p>
-    </div>
-
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Work Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline" id="timeline"></div>
 </section>
 
-<!-- RESUME -->
-<section id="resume">
-    <h2>Resume</h2>
-    <div class="card">
-        <p>You can download my full resume here:</p>
-        <a href="Anas_Moyin_Resume.pdf" class="btn" download>Download Resume</a>
-    </div>
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Key Achievements</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="achievements-grid" id="achievementsGrid"></div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact">
-    <h2>Contact</h2>
-    <div class="card contact">
-        <p>📧 Email: anumoyin@gmail.com</p>
-        <p>📞 Phone: +91 8197746698</p>
-        <p>📍 Location: Bangalore, India</p>
-    </div>
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Key Projects</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid" id="projectsGrid"></div>
 </section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Education & Certifications</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-grid" id="eduGrid"></div>
+</section>
+
+<!-- LANGUAGES -->
+<section id="languages">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Languages</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="lang-row" id="langRow"></div>
+</section>
+
+</main>
 
 <footer>
-    <p>© 2026 Anas Moyin</p>
+  <div>
+    <div class="footer-name">Anas Moyin</div>
+    <div class="footer-contact">
+      <a href="mailto:anumoyin@gmail.com">anumoyin@gmail.com</a><br>
+      +91 8197746698 · Bangalore, India
+    </div>
+  </div>
+  <div class="footer-built">Built with HTML · Hosted on GitHub Pages</div>
 </footer>
 
 <script>
-const sections = document.querySelectorAll("section");
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const skills = [
+  { icon: '☁️', name: 'Cloud Engineering', tags: ['Azure', 'AWS', 'GCP', 'Hybrid Cloud'] },
+  { icon: '🖥️', name: 'System Administration', tags: ['Windows Server', 'Linux', 'VMware', 'Hyper-V'] },
+  { icon: '🔐', name: 'Identity & Access Management', tags: ['MFA', 'Conditional Access', 'RBAC', 'API Auth'] },
+  { icon: '🛡️', name: 'Endpoint Security', tags: ['Intune', 'SCCM', 'Defender', 'EDR', 'DLP'] },
+  { icon: '📧', name: 'Microsoft 365 Admin', tags: ['Exchange Online', 'Entra ID', 'Teams', 'SharePoint'] },
+  { icon: '🌐', name: 'Networking & Connectivity', tags: ['VPN', 'Firewall', 'DNS', 'CCTV'] },
+  { icon: '📊', name: 'Monitoring & Performance', tags: ['CloudWatch', 'ITSM', 'SLA', 'Incident Mgmt'] },
+  { icon: '💰', name: 'IT Budgeting & Cost Optimization', tags: ['FinOps', 'License Mgmt', 'Procurement'] },
+  { icon: '🔄', name: 'Backup & Disaster Recovery', tags: ['BCP', 'Recovery Testing', 'Business Continuity'] },
+  { icon: '👥', name: 'Team Leadership', tags: ['Mentoring', 'Service Delivery', 'CMDB', 'Asset Mgmt'] },
+];
 
-window.addEventListener("scroll", () => {
-    sections.forEach(sec => {
-        const top = sec.getBoundingClientRect().top;
-        if (top < window.innerHeight - 100) {
-            sec.classList.add("show");
-        }
-    });
+const experience = [
+  {
+    role: 'IT System Administrator & Cloud Team Lead',
+    company: 'Hector Beverages — Paper Boat',
+    period: 'Jul 2023 – Present',
+    points: [
+      'Led enterprise IT infrastructure across Azure, AWS, and GCP for business-critical and production systems.',
+      'Achieved 25%+ reduction in cloud operating costs through right-sizing, workload optimization, and license rationalization.',
+      'Implemented IAM frameworks including MFA, Conditional Access, API-based authentication, and RBAC.',
+      'Directed endpoint security using Intune, SCCM, Microsoft Defender for Endpoint, EDR, and DLP policies.',
+      'Maintained 98%+ SLA compliance across incident, problem, change, and service request management.',
+      'Led and mentored the IT Infrastructure and Cloud team with full performance and delivery ownership.',
+      'Owned annual IT budgeting, vendor management, contract negotiations, and license compliance.'
+    ]
+  },
+  {
+    role: 'IT Team Lead',
+    company: 'Mystify Consulting Pvt Ltd',
+    period: 'Apr 2022 – Jul 2023',
+    points: [
+      'Led end-to-end IT operations including system admin, cloud infra support, and endpoint management.',
+      'Managed 200+ weekly service tickets with consistent SLA-driven closure.',
+      'Supervised IT engineers through task allocation, escalation handling, and performance evaluation.',
+      'Implemented proactive server monitoring and incident reduction strategies.',
+      'Ensured SOP compliance, documentation accuracy, and audit readiness.'
+    ]
+  },
+  {
+    role: 'IT System Engineer',
+    company: 'Vedantu Innovation Pvt Ltd',
+    period: 'May 2019 – Mar 2022',
+    points: [
+      'Delivered enterprise system administration and technical support for large user environments.',
+      'Managed Windows updates, MECM operations, and Azure AD domain join processes.',
+      'Supported Microsoft Outlook, Teams, and collaboration tools across the organization.',
+      'Improved incident resolution time through structured troubleshooting practices.'
+    ]
+  },
+  {
+    role: 'System Administrator',
+    company: 'BankBazaar',
+    period: 'Mar 2018 – Apr 2019',
+    points: [
+      'Managed daily system administration including server monitoring and access provisioning.',
+      'Supported cloud-based email systems, Exchange administration, and user management.',
+      'Coordinated with vendors for hardware, software, and support services.'
+    ]
+  },
+  {
+    role: 'Desktop Support Engineer',
+    company: 'HGS Hinduja Global Solutions',
+    period: 'Jun 2015 – Dec 2017',
+    points: [
+      'Delivered enterprise desktop support across large-scale corporate environments.',
+      'Supported user onboarding, system setup, laptop allocation, and access provisioning.',
+      'Achieved high first-call resolution and user satisfaction ratings.'
+    ]
+  },
+  {
+    role: 'Desktop Support Engineer',
+    company: 'Star Computer',
+    period: 'May 2014 – May 2015',
+    points: [
+      'Installed, configured, and supported desktop systems and peripherals.',
+      'Supported LAN connectivity, printer configuration, and basic networking.'
+    ]
+  }
+];
+
+const achievements = [
+  { icon: '💸', metric: '25%+', label: 'Reduction in cloud infrastructure spend' },
+  { icon: '⚡', metric: '99.9%', label: 'System uptime across cloud and on-premise' },
+  { icon: '🛡️', metric: 'Zero', label: 'Critical cybersecurity incidents achieved' },
+  { icon: '✅', metric: '98%+', label: 'SLA compliance across all IT operations' },
+];
+
+const projects = [
+  { name: 'Cloud Infrastructure Optimization', desc: 'VM instance right-sizing, CloudWatch-level monitoring, automated cost governance controls, and continuous cloud cost optimization.' },
+  { name: 'Endpoint Security & DLP Implementation', desc: 'Intune integration, MFA rollout, data loss prevention policies, and compliance enforcement across enterprise endpoints.' },
+  { name: 'Identity & Access Modernization', desc: 'API authentication integrations, Conditional Access policy design, Zero Trust MFA rollout, and RBAC governance.' },
+  { name: 'Business Continuity & Disaster Recovery', desc: 'Comprehensive backup strategy, recovery testing, failover planning, and IT business continuity documentation.' },
+];
+
+const education = [
+  { type: 'Degree', title: 'B.Sc. Computer Science', sub: 'Bharathiar University, Tamil Nadu, India' },
+  { type: 'Certification', title: 'CCNA', sub: 'Cisco Certified Network Associate' },
+];
+
+const languages = [
+  { lang: 'English', skills: 'Read · Write · Speak' },
+  { lang: 'Tamil', skills: 'Read · Write · Speak' },
+  { lang: 'Malayalam', skills: 'Read · Speak' },
+  { lang: 'Arabic', skills: 'Write' },
+  { lang: 'Hindi', skills: 'Speak' },
+  { lang: 'Kannada', skills: 'Speak' },
+];
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+document.getElementById('skillsGrid').innerHTML = skills.map(s => `
+  <div class="skill-card">
+    <div class="skill-icon">${s.icon}</div>
+    <div class="skill-name">${s.name}</div>
+    <div class="skill-tags">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+  </div>
+`).join('');
+
+document.getElementById('timeline').innerHTML = experience.map((e, i) => `
+  <div class="timeline-item">
+    <div class="exp-header">
+      <div class="exp-role">${e.role}</div>
+      <div class="exp-period">${e.period}</div>
+    </div>
+    <div class="exp-company">— ${e.company}</div>
+    <ul class="exp-points">${e.points.map(p => `<li>${p}</li>`).join('')}</ul>
+  </div>
+`).join('');
+
+document.getElementById('achievementsGrid').innerHTML = achievements.map(a => `
+  <div class="achievement-card">
+    <div class="ach-icon">${a.icon}</div>
+    <div class="ach-metric">${a.metric}</div>
+    <div class="ach-label">${a.label}</div>
+  </div>
+`).join('');
+
+document.getElementById('projectsGrid').innerHTML = projects.map((p, i) => `
+  <div class="project-card">
+    <div class="project-num">PROJECT_${String(i+1).padStart(2,'0')}</div>
+    <div class="project-name">${p.name}</div>
+    <div class="project-desc">${p.desc}</div>
+  </div>
+`).join('');
+
+document.getElementById('eduGrid').innerHTML = education.map(e => `
+  <div class="edu-card">
+    <div class="edu-type">${e.type}</div>
+    <div class="edu-title">${e.title}</div>
+    <div class="edu-sub">${e.sub}</div>
+  </div>
+`).join('');
+
+document.getElementById('langRow').innerHTML = languages.map(l => `
+  <div class="lang-pill"><strong>${l.lang}</strong> &nbsp;·&nbsp; <span style="opacity:0.6;font-size:11px">${l.skills}</span></div>
+`).join('');
+
+// ─── PARTICLE CANVAS ─────────────────────────────────────────────────────────
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], connections = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
+    this.r = Math.random() * 1.5 + 0.5;
+    this.alpha = Math.random() * 0.5 + 0.1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > W) this.vx *= -1;
+    if (this.y < 0 || this.y > H) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,212,255,${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+// Floating data labels
+const dataLabels = [
+  'AZURE', 'AWS', 'GCP', 'ITSM', 'INTUNE', 'VPN', 'MFA', 'EDR', 'DLP', 'IAM',
+  'SCCM', 'CCNA', 'M365', 'CMDB', 'SLA', 'ENTRA', 'RBAC', 'BCDR', 'FINOPS', 'ZERO TRUST'
+];
+
+class Label {
+  constructor(text) {
+    this.text = text;
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.15;
+    this.vy = (Math.random() - 0.5) * 0.15;
+    this.alpha = Math.random() * 0.07 + 0.03;
+    this.size = Math.random() * 4 + 8;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < -100 || this.x > W + 100) this.vx *= -1;
+    if (this.y < -30 || this.y > H + 30) this.vy *= -1;
+  }
+  draw() {
+    ctx.font = `${this.size}px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = `rgba(0,212,255,${this.alpha})`;
+    ctx.fillText(this.text, this.x, this.y);
+  }
+}
+
+const labels = dataLabels.map(t => new Label(t));
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 130) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(0,212,255,${0.12 * (1 - dist/130)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  labels.forEach(l => { l.update(); l.draw(); });
+  drawConnections();
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ─── CURSOR ──────────────────────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+(function moveRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(moveRing);
+})();
+
+document.querySelectorAll('a, button, .skill-card, .achievement-card, .project-card').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.style.transform = 'translate(-50%,-50%) scale(1.8)');
+  el.addEventListener('mouseleave', () => ring.style.transform = 'translate(-50%,-50%) scale(1)');
+});
+
+// ─── SCROLL REVEAL ────────────────────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const delay = el.dataset.delay || 0;
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      }, delay);
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.1 });
+
+// Stagger children of grid containers
+document.querySelectorAll('.skill-card, .achievement-card, .project-card, .edu-card, .timeline-item, .lang-pill').forEach((el, i) => {
+  el.dataset.delay = (i % 6) * 80;
+  observer.observe(el);
 });
 </script>
-
 </body>
 </html>
